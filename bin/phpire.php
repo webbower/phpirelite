@@ -34,17 +34,19 @@ $opts = getopt(
 	)
 );
 
-$debug = isset($opts['d']);
+$debug = (isset($opts['d']) || isset($opts['debug']));
 
 if($debug) {
 	echo "\nOpts\n";
 	print_r($opts);
 
-	echo "\nARGV\n";
+	echo "\nARGS\n";
+	echo "\nNumber of args: {$argc}\n";
 	print_r($argv);
 }
 
-if(isset($opts['h']) || isset($opts['help'])) {
+// Figure out a better way to detect showing Usage and shorting out with lack of arguments
+if($argc < 2 || isset($opts['h']) || isset($opts['help'])) {
 	usage();
 }
 
@@ -69,6 +71,11 @@ function usage() {
 	echo <<<USAGE
 
 phpire <action> <subaction> ...
+
+Usage:
+phpire -h
+-OR-
+phpire --help
 
 App:
 phpire app new <name>
