@@ -32,10 +32,6 @@ Loader::set_include_path(array(
 	APP_DIR . DS . 'lib',
 ));
 
-$foo = new stdClass();
-
-Loader::set_include_path($foo);
-
 // Register that these classes have been loaded already
 Loader::load('Kernel:Base.php', true);
 Loader::load('Kernel:Logger.php', true);
