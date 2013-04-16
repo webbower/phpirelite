@@ -1,0 +1,4 @@
+phpirelite
+==========
+
+PHPireLite Framework Core
