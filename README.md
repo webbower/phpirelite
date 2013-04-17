@@ -10,7 +10,8 @@ The core component of PHPireLite is its Kernel. It provides a simple, lightweigh
 
 1. Create a folder to house your whole application.
 2. From that folder, clone the Git repo to your dev environment.
-3. Still from that folder, run `php phpirelite/bin/phpire.php app new <name>` where `<name>` is what you want to call your app.
-4. Set the new `<name>/web` folder as your webroot.
-5. Open the new webroot in your web browser. You should see the message about successfully creating the `<name>` App
-6. Open `<name>/lib/<name>.php`. The `main()` method of the class is what generates that output. That's where you'll structure you're app's running logic. Change what gets echoed and refresh your web browser.
+3. Still from that folder, run `php phpirelite/bin/phpire.php init <env>` where `<env>` is the environement (`dev` [default], `stage`, or `prod`). This will configure the real CLI tool and create the Env file.
+4. Still from that folder, run `phpirelite/bin/phpire app new <name>` where `<name>` is what you want to call your app.
+5. Set the new `<name>/web` folder as your webroot.
+6. Open the new webroot in your web browser. You should see the message about successfully creating the `<name>` App
+7. Open `<name>/lib/<name>.php`. The `main()` method of the class is what generates that output. That's where you'll structure you're app's running logic. Change what gets echoed and refresh your web browser.
