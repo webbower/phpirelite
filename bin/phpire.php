@@ -14,6 +14,9 @@ define('LIB_NAME', basename(LIB_DIR));
 // Full path to the base directory that stores the framework folder, and all the app and module folders
 define('BASE_DIR', dirname(LIB_DIR));
 
+function writeln($message) {
+	echo "{$message}\n";
+}
 
 // PHPire it up!!! ;-)
 // Include baseline to get everything up and running
@@ -52,8 +55,19 @@ if($argc < 2 || isset($opts['h']) || isset($opts['help'])) {
 
 $script = $argv[0];
 $action = $argv[1];
-$subaction = $argv[2];
-$target = $argv[3];
+
+// No sub-action
+if(in_array($action, array('init'))) {
+	$env = isset($argv[2]) && in_array($argv[2], array('dev','stage','prod')) ? $argv[2] : 'dev';
+}
+// Sub-action
+else if(in_array($action, array('app'))) {
+	$subaction = $argv[2];
+	$target = $argv[3];
+}
+else {
+	usage();
+}
 
 if($action === 'app') {
 	switch($subaction) {
@@ -65,6 +79,9 @@ if($action === 'app') {
 			
 			break;
 	}
+}
+else if ($action === 'init') {
+	init($env);
 }
 
 function usage() {
@@ -83,6 +100,74 @@ phpire app new <name>
 Creates a new app skeleton
 
 USAGE;
+	exit;
+}
+
+function init($env='dev') {
+	$env_file = BASE_DIR . DS . 'pl_env.php';
+	
+	if(file_exists($env_file)) {
+		writeln('[INFO] Env file already exists. Aborting.');
+		exit;
+	}
+	
+	$out = <<<ENV
+<?php
+
+// Environment Configuration
+// This file should be different on each machine and generally NOT included in source control
+
+// PL_ENV expected values: dev, stage, prod
+define('PL_ENV', '{$env}');
+
+ENV;
+
+	$dev_env = <<<DEV
+define('DEBUG', true);
+define('PL_DISPLAY_ERRORS', true);
+
+Logger::set_log_level(PL_LOGGER_INFO);
+Logger::set_output_level(PL_LOGGER_ERROR);
+DEV;
+
+	$stage_env = <<<STAGE
+define('DEBUG', false);
+define('PL_DISPLAY_ERRORS', false);
+
+Logger::set_log_level(PL_LOGGER_WARN);
+Logger::set_output_level(PL_LOGGER_ERROR);
+STAGE;
+
+	$prod_env = <<<PROD
+define('DEBUG', false);
+define('PL_DISPLAY_ERRORS', false);
+
+Logger::set_log_level(PL_LOGGER_ERROR);
+PROD;
+
+	switch($env) {
+		case 'prod':
+			$out .= $prod_env;
+			break;
+
+		case 'stage':
+			$out .= $stage_env;
+			break;
+
+		case 'dev':
+		default:
+			$out .= $dev_env;
+			break;
+	}
+
+	chmod(LIB_DIR . DS . 'bin' . DS . 'phpire', 'u+x');
+	writeln('[INFO] Permissions set on phpire CLI tool.');
+
+	file_put_contents(BASE_DIR . DS . 'pl_env.php', $out);
+	writeln('[INFO] Env file created.');
+
+	writeln('[SUCCESS] Init successful.');
+
 	exit;
 }
 
@@ -161,21 +246,21 @@ APP;
 	$lib_path = $app_path . DS . 'lib';
 
 	if(is_dir($app_path)) {
-		echo "[ABORT] An app named {$name} already exists at " . dirname($app_path);
+		writeln("[ABORT] An app named {$name} already exists at " . dirname($app_path));
 		exit(2);
 	}
 
 	mkdir($app_path, 0755);
 	mkdir($web_path, 0755);
 	mkdir($lib_path, 0755);
-	echo "[INFO] Created base app folder structure\n";
+	writeln("[INFO] Created base app folder structure");
 	file_put_contents($web_path . DS . '.htaccess', $htaccess);
 	file_put_contents($web_path . DS . 'index.php', $index);
-	echo "[INFO] Created app web files\n";
+	writeln("[INFO] Created app web files");
 	file_put_contents($lib_path . DS . 'config.php', $config);
 	file_put_contents($lib_path . DS . $app_class . '.php', $app);
-	echo "[INFO] Created app lib files\n";
-	echo "[SUCCESS] New app '{$name}' created successfully. Point your webroot to {$web_path}";
+	writeln("[INFO] Created app lib files");
+	writeln("[SUCCESS] New app '{$name}' created successfully. Point your webroot to {$web_path}");
 	exit;
 }
 
