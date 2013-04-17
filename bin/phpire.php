@@ -160,7 +160,7 @@ PROD;
 			break;
 	}
 
-	chmod(LIB_DIR . DS . 'bin' . DS . 'phpire', 'u+x');
+	chmod(LIB_DIR . DS . 'bin' . DS . 'phpire', 0744);
 	writeln('[INFO] Permissions set on phpire CLI tool.');
 
 	file_put_contents(BASE_DIR . DS . 'pl_env.php', $out);
