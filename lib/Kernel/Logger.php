@@ -13,90 +13,22 @@ class Logger extends Base {
 		8 => 'CRITICAL',
 	);
 
-	// TODO To be implemented
-	// Sets the level for which logs are sent to SMS
-	// protected static $sms_level;
-
-	// TODO To be implemented
-	// Sets the level for which logs are sent to email
-	// protected static $email_level;
-
-	// Sets the level for which logs are sent to the error log
+	// Level for which logs are sent to the error log
 	protected static $log_level;
 
-	// Sets the level for which logs are sent to the browser
+	// Level for which logs are sent to the browser
 	protected static $output_level;
 	
-	// TODO To be implemented
-	// protected static $sms_numbers = array();
-	
-	// TODO To be implemented
-	// protected static $email_addresses = array();
-
-	// TODO To be implemented
-	// public static function add_sms($number, $level) {
-	// 	if(!is_int($level)) {
-	// 		error_log('[USE LOGGER] Logger::add_sms expected integer for second arg, instead received ' . var_export($level, true));
-	// 	}
-	// 	
-	// 	if(!isset(self::$sms_numbers[$level])) {
-	// 		self::$sms_numbers[$level] = array();
-	// 	}
-	// 	
-	// 	if(in_array($number, self::$sms_numbers[$level])) {
-	// 		error_log("[USE LOGGER] {$number} already set for Logger level {$level}");
-	// 		return false;
-	// 	}
-	// 	
-	// 	array_push(self::$sms_numbers[$level], $number);
-	// 	return true;
-	// }
-
-	// TODO To be implemented
-	// public static function add_email($email, $level) {
-	// 	if(!is_int($level)) {
-	// 		error_log('[USE LOGGER] Logger::add_email expected integer for second arg, instead received ' . var_export($level, true));
-	// 	}
-	// 	
-	// 	if(!isset(self::$email_addresses[$level])) {
-	// 		self::$email_addresses[$level] = array();
-	// 	}
-	// 	
-	// 	if(in_array($number, self::$email_addresses[$level])) {
-	// 		error_log("[USE LOGGER] {$email} already set for Logger level {$level}");
-	// 		return false;
-	// 	}
-	// 	
-	// 	array_push(self::$email_addresses[$level], $number);
-	// 	return true;
-	// }
-	
-	// TODO To be implemented
-	// public static function set_sms_level($level) {
-	// 	self::$sms_level = $level;
-	// }
-
-	// TODO To be implemented
-	// public static function set_email_level($level) {
-	// 	self::$email_level = $level;
-	// }
-
+	// Sets the level for which logs are sent to the error log
 	public static function set_log_level($level) {
 		self::$log_level = $level;
 	}
 
+	// Sets the level for which logs are sent to the browser
 	public static function set_output_level($level) {
 		self::$output_level = $level;
 	}
 	
-	// TODO To be implemented
-	// Send an SMS alert
-	// protected static function send_sms($message='') {}
-
-	// TODO To be implemented
-	// Send an Email alert
-	// protected static function send_email($message='') {}
-
 	// Send the error to the error log
 	protected static function log_error($message='') {
 		error_log("{$message}");
@@ -131,16 +63,6 @@ class Logger extends Base {
 			$prefix = self::$prefixes[$level];
 			
 			$log_msg = "[LOG:{$prefix}] {$message} ({$stack_meta})";
-
-			// SMS - To be implemented
-			// if($level >= self::$sms_level) {
-			// 	self::send_sms($log_msg);
-			// }
-
-			// Email - To be implemented
-			// if($level >= self::$email_level) {
-			// 	self::send_email($log_msg);
-			// }
 
 			// Output
 			if($level >= self::$output_level) {
