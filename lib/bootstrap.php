@@ -1,6 +1,6 @@
 <?php
 
-define('PL_VERSION', '0.1.0');
+define('PL_VERSION', '0.2.0-alpha.1');
 
 // These utility functions are needed before we can safely include utilities.php
 function get_array_value(array $array, $key, $default=null) {
