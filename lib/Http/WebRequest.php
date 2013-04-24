@@ -46,6 +46,8 @@ class WebRequest extends Base {
 	protected $body;
 	
 	public function __construct($verb = 'GET', $url = null, array $headers = array(), $body = null, $readonly = false) {
+		parent::__construct();
+		
 		$this->verb = $verb;
 		
 		$this->headers = $headers;
